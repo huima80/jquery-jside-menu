@@ -7,93 +7,95 @@
  *   Copyright (c) 2018 - Asif Mughal
  */
 /* File: jquery.jside.menu.js */
-(function($){
-     $.fn.jSideMenu = function(options){
-    var setting = $.extend({
-   		   jSidePosition: "position-left", //possible options position-left or position-right 
-           jSideSticky: true, // menubar will be fixed on top, false to set static
-           jSideSkin: "default-skin", // to apply custom skin, just put its name in this string
-             
-  		   }, options);
-  
-  return this.each(function() {
-  var target, $headHeight,
-        $devHeight,
-        jSide,
-        arrow,
-        dimBackground;    
-        target = $(this);
+(function ($) {
+    $.fn.jSideMenu = function (options) {
+        var setting = $.extend({
+            jSidePosition: "position-left", //possible options position-left or position-right 
+            jSideSticky: true, // menubar will be fixed on top, false to set static
+            jSideSkin: "default-skin", // to apply custom skin, just put its name in this string
 
-/* Accessing DOM */
-  jSide = $(".menu-container, .menu-head");
-  $devHeight = $(window).height();
-  $headHeight = $(".menu-head").height();
-  arrow = document.createElement("i");
-  dimBackground = $(".dim-overlay");
-// Set the height of side menu according to the available height of device
-$(target).css({
-    'height' : $devHeight-$headHeight,
+        }, options);
 
-});
+        return this.each(function () {
+            var target, $headHeight,
+                $devHeight,
+                jSide,
+                arrow,
+                dimBackground;
+            target = $(this);
 
-    if (setting.jSideSticky == true){
-     $(".menubar").addClass("sticky");
-}  else{
-     $(".menubar").removeClass("sticky");
-   }
+            /* Accessing DOM */
+            jSide = $(".menu-container, .menu-head");
+            $devHeight = $(window).height();
+            $headHeight = $(".menu-head").height();
+            arrow = document.createElement("i");
+            dimBackground = $(".dim-overlay");
+            // Set the height of side menu according to the available height of device
+            $(target).css({
+                'height': $devHeight - $headHeight,
 
-$(".menubar").addClass(setting.jSideSkin);
- $(jSide).addClass(setting.jSideSkin).addClass(setting.jSidePosition);
+            });
 
-   if ($(jSide).hasClass("position-left")){
-$(".menu-trigger").addClass("left").removeClass("right");
-     }
-  else{
-$(".menu-trigger").removeClass("left").addClass("right");
-   }
+            if (setting.jSideSticky == true) {
+                $(".menubar").addClass("sticky");
+            } else {
+                $(".menubar").removeClass("sticky");
+            }
 
-//Dropdown Arrow
-    $(arrow).addClass("zmdi zmdi-chevron-down arrow").appendTo(".dropdown-heading");
+            $(".menubar").addClass(setting.jSideSkin);
+            $(jSide).addClass(setting.jSideSkin).addClass(setting.jSidePosition);
 
-//Dropdowns
-    $(".dropdown-heading").click(function(){
-      var n = $(".has-sub").find("span:hover + ul li").length;
-      var h = $(".has-sub").find("span:hover + ul li").outerHeight();
-      var dropdown = h*n;
-      var todrop = $(".has-sub").find("span:hover + ul");
-      var nodrop = $(".has-sub ul");
+            if ($(jSide).hasClass("position-left")) {
+                $(".menu-trigger").addClass("left").removeClass("right");
+            }
+            else {
+                $(".menu-trigger").removeClass("left").addClass("right");
+            }
 
-    $(todrop).animate({"height" : dropdown}, 100);
-    $(this).find("i").toggleClass("arrowdown");
-    if ($(todrop).height() == dropdown){
-      $(todrop).animate({"height" : 0}, 100);
-    }
+            //Dropdown Arrow
+            $(arrow).addClass("zmdi zmdi-chevron-down arrow").appendTo(".dropdown-heading");
 
-      if ($(nodrop).height(dropdown)){
-        $(nodrop).not(todrop).height(0); $(".dropdown-heading").not(this).find("i").removeClass("arrowdown");
-      }
- });
+            //Dropdowns
+            $(".dropdown-heading").click(function () {
+                var n = $(".has-sub").find("span:hover + ul li").length;
+                var h = $(".has-sub").find("span:hover + ul li").outerHeight();
+                var dropdown = Math.trunc(h * n);
+                var todrop = $(".has-sub").find("span:hover + ul");
+                var nodrop = $(".has-sub ul");
 
-$(".menu-trigger").click(function(){
-   $(jSide).toggleClass("open");
-   $(dimBackground).show(500);
+                $(todrop).animate({ "height": dropdown }, 100);
+                $(this).find("i").toggleClass("arrowdown");
+                if (Math.trunc($(todrop).height()) == dropdown) {
+                    $(todrop).animate({ "height": 0 }, 100);
+                }
 
-});
+                if ($(nodrop).height(dropdown)) {
+                    $(nodrop).not(todrop).height(0); $(".dropdown-heading").not(this).find("i").removeClass("arrowdown");
+                }
+            });
 
-//close menu if user click outside of it
-   $(window).click(function(e) {
-    if ($(e.target).closest('.menu-trigger').length){
-     return;}
-    if ($(e.target).closest(jSide).length){
-     return;}
-    
- $(jSide).removeClass("open");
-    if (!$(jSide).hasClass("open")) {
-     $(dimBackground).hide(500);
-        }
-      });
-   });
- };
+            $(".menu-trigger").click(function () {
+                $(jSide).toggleClass("open");
+                $(dimBackground).show(500);
+
+            });
+
+            //close menu if user click outside of it
+            $(window).click(function (e) {
+                if ($(e.target).closest('.menu-trigger').length) {
+                    return;
+                }
+                if ($(e.target).closest(jSide).length) {
+                    return;
+                }
+
+                $(jSide).removeClass("open");
+                if (!$(jSide).hasClass("open")) {
+                    $(dimBackground).hide(500);
+                }
+            });
+        });
+    };
 
 })(jQuery);
 /*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
